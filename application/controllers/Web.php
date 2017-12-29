@@ -5,27 +5,51 @@ class Web extends CI_Controller{
 
 	public function index(){
 		if($this->session->userdata('logged')){
+			if(!$this->session->userdata('company')->layout){
+				$this->session->set_userdata('registerStep', 5);
+				redirect('/register');
+			}
 			$data['body'] = "index";
-		}
-		else if($this->session->userdata('isNotFirstAccess')){
+		}else if($this->session->userdata('isNotFirstAccess')){
 			$data['body'] = "login";
-		}
-		else{
+		}else{
 			$data['body'] = "first-access";
 		}
 		$this->load->view('templates/html', $data);
 	}
 	
-	public function get_login(){
+	public function reward(){
+		if($this->session->userdata('logged')){
+			$this->load->model('RewardModel','reward');
+			$data['rewards'] = $this->reward->select();
+			$data['body'] = "reward";
+			$this->load->view('templates/html', $data);
+		}else{
+			redirect();
+		}
+	}
+	
+	public function reward_edit($id){
+		if($this->session->userdata('logged')){
+			$this->load->model('RewardModel','reward');
+			$data['reward'] = $this->reward->select($id);
+			$data['body'] = "edit/reward";
+			$this->load->view('templates/html', $data);
+		}else{
+			redirect();
+		}
+	}
+	
+	public function login(){
 		$this->session->set_userdata('isNotFirstAccess', true);
 		redirect();
 	}
 	
-	public function get_register(){
-		if($this->session->userdata('logged')){
+	public function register(){
+		$step = $this->session->userdata('registerStep');
+		if($this->session->userdata('logged') && $step != 5){
 			redirect();
 		}else{
-			$step = $this->session->userdata('registerStep');
 			switch($step){
 				case 2:
 					$data['body'] = 'register/step-two';
@@ -35,6 +59,12 @@ class Web extends CI_Controller{
 					$data['email'] = $this->session->userdata('emailPending');
 					break;
 				case 4:
+					$data['body'] = 'register/step-four';
+					$data['company'] = $this->session->userdata('company');
+					break;
+				case 5:
+					$data['body'] = 'register/step-five';
+					$data['company'] = $this->session->userdata('company');
 					break;
 				default:
 					$data['body'] = 'register/step-one';

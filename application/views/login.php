@@ -1,9 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$this->load->view('templates/toast');
 ?>
 
 <main class="flex-container">
-    <form class="row" action="login-admin" method="POST">
+    <form class="row" action="login" method="POST">
         <div class='input-field col s12'>
             <input class='validate' type='text' name='username' id='username' required/>
             <label for='username'>Username</label>

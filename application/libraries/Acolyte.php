@@ -18,7 +18,7 @@ class Acolyte {
 	    exit;
 	}
 	
-	public function res_form($msg,$route = null){
+	public function res_form($msg, $route = null){
 		$this->CI->session->set_flashdata('MSG', $msg);
 		$route == null ? redirect(base_url(),'refresh') : redirect($route,'refresh');
 	}
