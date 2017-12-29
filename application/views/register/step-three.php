@@ -13,6 +13,8 @@ $this->load->view('templates/loading');
           <li></li>
         </ul>
     </div>
-    <p class="grey-text text-darken-4 step-message">We've sent you an email for <b class="red-text text-darken-4"><?= $email ?></b></p>
-    <p class="step-message white-text grey darken-4">Confirm your account to generate a login</p>
+    <div class="flex-center">
+      <p class="grey-text text-darken-4 step-message email-sent-p">We've sent you an email for <b class="red-text text-darken-4"><?= $email ?></b></p>
+      <p class="step-message white-text grey darken-4 confirm-account-p">Confirm your account to generate a login</p>
+    </div>
 </main>
