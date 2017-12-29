@@ -13,7 +13,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js" type="text/javascript"></script>
     <script src="<?php echo base_url()?>assets/js/script.js?<?php echo rand() ?>"></script>
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/main.css"/>
 </head>

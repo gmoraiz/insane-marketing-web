@@ -8,9 +8,6 @@ application/logs/*
 
 !application/*/.htaccess
 
-assets/img/company/*
-assets/img/reward/*
-
 composer.lock
 
 user_guide_src/build/*

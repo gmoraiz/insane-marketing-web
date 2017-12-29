@@ -6,46 +6,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      <li>
         <div class="user-view">
             <div class="background">
-                <img width="300px" src="<?= base_url() . 'assets/img/wallpaper.png' ?>">
+                <img width="300px" src="<?php echo base_url() . 'assets/img/salao/' . $this->session->userdata('banner'); ?>">
             </div>
-            <a href="#!user"><span class="white-text name" style="margin:0">Hi, <?= $this->session->userdata('company')->admin ?></span></a>
-            <a href="#!user"><img class="circle" src="<?= base_url() . 'assets/img/company/' . $this->session->userdata('company')->picture ?>"></a>
-            <a href="#!name"><span class="white-text name"><?= $this->session->userdata('company')->name ?></span></a>
-            <a href="#!email"><span class="white-text email"><?= $this->session->userdata('company')->email ?></span></a>
+            <a href="#!user"><img class="circle" src="<? echo base_url() . 'assets/img/salao/' . $this->session->userdata('banner') ?>"></a>
+            <a href="#!name"><span class="white-text name"><? echo $this->session->userdata('nome') ?></span></a>
+            <a href="#!email"><span class="white-text email"><? echo $this->session->userdata('login') ?></span></a>
         </div>
     </li>
-    <li <?php if(isset($index)) echo 'class="active"'; ?>>
-        <a href="/">
-            <i class="material-icons">assistant_photo</i>Init
+    <li <? if(isset($agendamento)) echo 'class="active"'; ?>>
+        <a href="<?php echo base_url() ?>agendamentos">
+            <i class="material-icons">perm_contact_calendar</i>Agendamentos
         </a>
     </li>
-    <li <?php if(isset($reward)) echo 'class="active"'; ?>>
-        <a href="reward">
-            <i class="material-icons">star_border</i>Rewards
+    <li <? if(isset($bonificacao)) echo 'class="active"'; ?>>
+        <a href="<?php echo base_url() ?>bonificacoes">
+            <i class="material-icons">star</i>Bonificações
         </a>
     </li>
-    
+    <li <? if(isset($cronograma)) echo 'class="active"'; ?>>
+        <a href="<?php echo base_url() ?>cronograma">
+            <i class="material-icons">today</i>Cronograma
+        </a>
+    </li>
+    <li <? if(isset($imagem)) echo 'class="active"'; ?>>
+        <a href="<?php echo base_url() ?>imagens">
+            <i class="material-icons">image</i>Imagens
+        </a>
+    </li>
+    <li <? if(isset($profissional)) echo 'class="active"'; ?>>
+        <a href="<?php echo base_url() ?>profissionais">
+            <i class="material-icons">perm_identity</i>Profissionais
+        </a>
+    </li>
+    <li <? if(isset($servico)) echo 'class="active"'; ?>>
+        <a href="<?php echo base_url() ?>servicos">
+            <i class="material-icons">view_module</i>Serviços
+        </a>
+    </li>
+    <li <? if(isset($video)) echo 'class="active"'; ?>>
+        <a href="<?php echo base_url() ?>videos">
+            <i class="material-icons">video_library</i>Vídeos
+        </a>
+    </li>
     <li>
         <div class="divider"></div>
     </li>
     <li>
-        <a class="subheader">Settings</a>
+        <a class="subheader">Opções</a>
     </li>
-    <li <?php if(isset($salao)) echo 'class="active"'; ?>>
-        <a href="<? echo base_url() ?>edit">
-            <i class="material-icons">home</i>Edit
+    <li <? if(isset($salao)) echo 'class="active"'; ?>>
+        <a href="<? echo base_url() ?>perfil">
+            <i class="material-icons">home</i>Editar salão
         </a>
     </li>
     <li>
         <a href="#">
-            <form method="post" id="logout" action="logout">
-                <input type="submit" class="btn btn-link logout grey-text text-darken-4 white border" value="Logout"/>
+            <form method="post" id="deslogar" action="deslogar">
+                <input type="submit" class="btn btn-link deslogar" value="Deslogar"/>
             </form>
         </a>
     </li>
 </ul>
-<header>
-    <nav class="grey darken-4">
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-    </nav>
-</header>
