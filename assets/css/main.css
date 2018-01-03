@@ -77,6 +77,7 @@ header nav{
 .mt-20 {
     margin-top: 20px;
 }
+
 .border {
     border:1px #212121 solid;
 }
@@ -219,6 +220,10 @@ header nav{
     z-index: 10000;
 }
 
+.loading-wrapper, .loading-pagination{
+    display: none;
+}
+
 .loading-wrapper .spinner-layer {
     border-color: #fff;
 }
@@ -237,11 +242,19 @@ header nav{
 }
 
 #panel #menu{
-  border-bottom:#212121 solid 1px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12), 0 1px 1px -2px rgba(0,0,0,0.2);
 }
 
-#panel #result{
+#panel #list{
     margin:10px 20px 20px 20px;
+}
+
+#panel #menu #options{
+    margin-top:3px;
+}
+
+#panel #menu #options.row{
+     margin-bottom:0px;
 }
 
 
@@ -277,6 +290,10 @@ header nav{
 @media (max-width: 576px) {
     .register-form .file {
         width: 100%;
+    }
+    
+    button[type="submit"]{
+        width:100%!important;
     }
 }
 

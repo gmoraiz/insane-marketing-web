@@ -1,10 +1,14 @@
+var paginationIncrease = 10;  //number pages to increase in each pagination request.
+var pagination = paginationIncrease; //Here i increment because the first page is renderized on get.
+var stopIncrease = false;  //When pagination to return empty, this variable will be true.
+
 $(document).ready(function (e) {
     init();
     steps();
-    deletes();
 });
 
 function init(){
+    
     $(".button-collapse").sideNav();
     $('.dynamic-form').hide();
     $('select').material_select();
@@ -33,6 +37,17 @@ function init(){
         prefix: "£",
         decimal: ".",
         thousands: ","
+    });
+    
+    //Date
+    $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: true,
+        today: 'Today',
+        clear: 'Clear',
+        close: 'Ok',
+        format: 'dd-mm-yyyy',
+        closeOnSelect: true
     });
     
 }
@@ -78,22 +93,6 @@ function steps(){
     
 }
 
-function deletes(){
-    $(".delete-reward").click(function(e){
-        let id = $(this).attr('data-id');
-        $("#delete-dialog .yes").click(function(){
-            AJAXRequester('DELETE', 'reward/'+id, null, null, 'wrapper').then(res => {
-                if(res.data){
-                    $('a[data-id="'+id+'"]').parent().remove();
-                }
-                Materialize.toast(res.msg);
-            }).catch(err => {
-                Materialize.toast(err.responseJSON.msg, 4000);
-            })
-        })
-    });
-}
-
 function AJAXRequester(method, url, data, headers = {}, typeload = null, formdata = false){
         if(formdata){
             return new Promise(function(resolve, reject){
@@ -123,7 +122,9 @@ function AJAXRequester(method, url, data, headers = {}, typeload = null, formdat
                     type: method,
                     url: url,
                     headers: headers,
-                    data: data
+                    data: data,
+                    beforeSend: load(typeload),
+                    complete: hide(typeload)
                 })
                 .done((data) => resolve(data))
                 .fail((data) => {
@@ -142,6 +143,10 @@ function load(type){
         case 'wrapper':
             $('.loading-wrapper').css('display', 'flex');
             break;
+        case 'pagination':
+            $('.loading-pagination').css('display', 'block');
+            stopPage();
+            break;
         default:
     }
 }
@@ -151,7 +156,29 @@ function hide(type){
         case 'wrapper':
             $('.loading-wrapper').fadeOut();
             break;
+        case 'pagination':
+            $('.loading-pagination').fadeOut();
+            startPage();
+            break;
         default:
     }
+}
+
+// TO PAGINATION
+
+function stopPage(){
+    stopIncrease = true;
+}
+
+function startPage(){
+    stopIncrease = false;
+}
+
+function nextPage(){
+    pagination+= paginationIncrease; //Case success, increase to next request.
+}
+
+function endPage(){
+    return $(window).scrollTop() + $(window).height() == $(document).height();
 }
     

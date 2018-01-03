@@ -39,7 +39,7 @@ class Reward extends CI_Controller{
     			    if($this->reward->update($id)){
     			        $this->acolyte->res_form("Success!", '/reward/' . $id);
     			    }else{
-    			        $this->acolyte->res_form("Failed, sorry ): Did you change anything?", '/reward/' . $id);
+    			        $this->acolyte->res_form("Failed, sorry ): Did you change some information?", '/reward/' . $id);
     			    }
     			}else{
     			    $this->acolyte->res_form("Image not uploaded, try again.", '/reward/' . $id);

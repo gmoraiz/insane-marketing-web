@@ -7,7 +7,9 @@ $this->load->view('templates/toast');
 <main class="full-container" id="panel">
     <section class="row" id="menu">
         <h3>Rewards</h3>
-        <a class="btn-flat waves-effect waves-light red white-text darken-4 dynamic-form-trigger">New</a>
+        <div class="row" id="options">
+            <a class="btn-flat waves-effect waves-light red white-text darken-4 dynamic-form-trigger">New</a>
+        </div>
         <form class="row dynamic-form" method="POST" action="reward" enctype="multipart/form-data">
             <div class="row">
                 <div class="input-field col xl5 l10 s12">
@@ -61,32 +63,17 @@ $this->load->view('templates/toast');
         </form>
     </section>
     
-    <section class="row" id="result">
+    <section class="row" id="list">
         <?php if(empty($rewards)): ?>
-            <p>You haven't any rewards.</p>
+            <p>You haven't any reward.</p>
         <?php else: ?>
             <ul class="collection">
-                <?php foreach($rewards as $reward): ?>
-                    <li class="collection-item avatar">
-                        <img src="assets/img/reward/<?= $reward->picture?>" alt="" class=" circle materialboxed responsive-img">
-                        <span class="title"><?= $reward->description ?></span>
-                        <p>
-                            <?php if($this->session->userdata('company')->type_fidelity == 'POINTS'): ?>
-                                <b class="yellow-text text-darken-3"><?= $reward->required ?> Points</b>
-                            <?php else: ?>
-                                <b class="green-text"><?= $reward->required ?></b>
-                            <?php endif; ?>
-                        </p>
-                        <a href="#delete-dialog" class="primary-content delete-reward modal-trigger" data-id="<?=$reward->id?>">
-                            <i class="material-icons small red-text">delete</i>
-                        </a>
-                        <a href="reward/<?=$reward->id?>" class="primary-content">
-                            <i class="material-icons small blue-text">refresh</i>
-                        </a>
-                    </li>
-                <?php endforeach; ?>
+                <?php $this->load->view('lists/reward') ?>
             </ul>
         <?php endif; ?>
+        <?php $this->load->view('templates/loading-pagination') ?>
     </section>
-    
 </main>
+
+<!-- GET JS OF THIS PAGE -->
+<script src="<?php echo base_url()?>assets/js/reward.js?<?php echo rand() ?>"></script>

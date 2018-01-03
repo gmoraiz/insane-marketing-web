@@ -6,7 +6,9 @@ $this->load->view('templates/toast');
 <main class="full-container" id="panel">
     <section class="row" id="menu">
         <h3>Rewards</h3>
-        <a href="../reward" class="btn-flat waves-effect waves-light red white-text darken-4 back"><i class="material-icons left">keyboard_arrow_left</i>Back</a>
+        <div class="row" id="options">
+            <a href="../reward" class="btn-flat waves-effect waves-light red white-text darken-4 back"><i class="material-icons left">keyboard_arrow_left</i>Back</a>
+        </div>
         <form class="row" method="POST" action="<?= $reward->id ?>" enctype="multipart/form-data">
             <div class="row">
                 <div class="input-field col xl5 l10 s12">

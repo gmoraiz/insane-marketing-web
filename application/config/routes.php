@@ -16,6 +16,12 @@ $route['reward/(:num)']['DELETE'] = 'reward/delete/$1';
 $route['reward/(:num)']['GET'] = 'web/reward_edit/$1';
 $route['reward/(:num)']['POST'] = 'reward/update/$1';
 
+$route['message']['GET'] = 'web/message';
+$route['message']['POST'] = 'message/insert';
+$route['message/(:num)']['DELETE'] = 'message/delete/$1';
+$route['message/(:num)']['GET'] = 'web/message_edit/$1';
+$route['message/(:num)']['POST'] = 'message/update/$1';
+
 $route['register']['GET']           = 'web/register';
 $route['register']['POST']          = 'admin/register';
 $route['register/(:any)']['GET']    = 'admin/confirm_step_three/$1';

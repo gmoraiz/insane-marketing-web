@@ -37,11 +37,13 @@ class RewardModel extends CI_Model{
             return false;
     }
     
-    public function select($id = null){
+    public function select($id = null, $pagination = 0){
         $this->db->select("reward.*, concat('£ ', format(reward.required, 2)) AS required");
         if($id){
             return $this->db->get_where('reward', array('id' => $id, 'company_id' => $this->session->userdata('company')->id, 'deleted' => NULL))->row();
         }
+        $this->db->limit(PAGINATION_COUNT, $pagination);
+        $this->db->order_by('id', 'DESC');
         return $this->db->get_where('reward', array('company_id' => $this->session->userdata('company')->id,  'deleted' => NULL))->result();
     }
     

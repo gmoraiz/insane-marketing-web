@@ -15,12 +15,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
     </li>
     <li <?php if(isset($index)) echo 'class="active"'; ?>>
-        <a href="/">
+        <a href="<?= base_url() ?>">
             <i class="material-icons">assistant_photo</i>Init
         </a>
     </li>
+    <li <?php if(isset($message)) echo 'class="active"'; ?>>
+        <a href="<?= base_url() ?>message">
+            <i class="material-icons">message</i>Messages
+        </a>
+    </li>
     <li <?php if(isset($reward)) echo 'class="active"'; ?>>
-        <a href="reward">
+        <a href="<?= base_url() ?>reward">
             <i class="material-icons">star_border</i>Rewards
         </a>
     </li>

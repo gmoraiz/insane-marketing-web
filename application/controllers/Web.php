@@ -2,7 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Web extends CI_Controller{
-
+	private $pagination;
+	
+	public function __construct(){
+		parent::__construct();
+		$this->pagination = isset($_GET['pagination']) ? $_GET['pagination'] : 0; //When 0 load complete page, else load only list to append.
+	}
+	
 	public function index(){
 		if($this->session->userdata('logged')){
 			if(!$this->session->userdata('company')->layout){
@@ -18,12 +24,42 @@ class Web extends CI_Controller{
 		$this->load->view('templates/html', $data);
 	}
 	
+	public function message(){
+			if($this->session->userdata('logged')){
+			$this->load->model('MessageModel','message');
+			$data['messages'] = $this->message->select(null, $this->pagination);
+			if($this->pagination){
+				$this->load->view('lists/message', $data);
+			}else{
+				$data['body'] = "message";
+				$this->load->view('templates/html', $data);
+			}
+		}else{
+			redirect();
+		}
+	}
+	
+	public function message_edit($id){
+		if($this->session->userdata('logged')){
+			$this->load->model('MessageModel','message');
+			$data['message'] = $this->message->select($id);
+			$data['body'] = "edit/message";
+			$this->load->view('templates/html', $data);
+		}else{
+			redirect();
+		}
+	}
+	
 	public function reward(){
 		if($this->session->userdata('logged')){
 			$this->load->model('RewardModel','reward');
-			$data['rewards'] = $this->reward->select();
-			$data['body'] = "reward";
-			$this->load->view('templates/html', $data);
+			$data['rewards'] = $this->reward->select(null, $this->pagination);
+			if($this->pagination){
+				$this->load->view('lists/reward', $data);
+			}else{
+				$data['body'] = "reward";
+				$this->load->view('templates/html', $data);
+			}
 		}else{
 			redirect();
 		}
