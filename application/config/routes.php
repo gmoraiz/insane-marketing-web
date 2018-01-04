@@ -10,6 +10,9 @@ $route['login']['GET']   = 'web/login';
 $route['login']['POST']  = 'admin/login';
 $route['logout']['POST'] = 'admin/logout';
 
+$route['by_phone/(:any)']['GET'] = 'user/by_phone/$1';
+
+
 $route['reward']['GET'] = 'web/reward';
 $route['reward']['POST'] = 'reward/insert';
 $route['reward/(:num)']['DELETE'] = 'reward/delete/$1';
@@ -27,4 +30,5 @@ $route['register']['POST']          = 'admin/register';
 $route['register/(:any)']['GET']    = 'admin/confirm_step_three/$1';
 $route['register-login']['POST']    = 'admin/register_login';
 $route['register-complete']['POST'] = 'admin/register_complete';
+$route['score']['POST']             = 'admin/score';
 

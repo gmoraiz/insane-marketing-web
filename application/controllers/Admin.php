@@ -3,12 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends CI_Controller{
 	
+	public function __construct(){
+		parent::__construct();
+		$this->load->model('AdminModel','admin');
+	}
+	
 	public function login(){
     	if(!$this->session->userdata('logged')){
     		$this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[60]');
 	    	$this->form_validation->set_rules('password', 'Password', 'trim|required|max_length[30]');
 	    	if($this->form_validation->run()){
-	    		$this->load->model('AdminModel','admin');
 	    		$user = $this->admin->login();
 	    		if($user){
 	    			$this->session->set_userdata('logged', true);
@@ -54,7 +58,6 @@ class Admin extends CI_Controller{
 			    $this->acolyte->res_ajax(422, "Oops incorret informations, try again.", $this->form_validation->error_array());
 			}
     	}else{
-    		$this->load->model('AdminModel','admin');
     		if($this->admin->insert()){
     			$this->admin->send_email();
     			$this->session->set_userdata('registerStep', 3);
@@ -71,7 +74,6 @@ class Admin extends CI_Controller{
     		$this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[60]|is_unique[admin.username]');
 	    	$this->form_validation->set_rules('password', 'Password', 'trim|required|max_length[30]');
 	    	if($this->form_validation->run()){
-	    		$this->load->model('AdminModel','admin');
 	    		$_POST['name'] = $this->session->userdata('company')->owner;
 	    		if($this->admin->insert_login(true)){
 	    			$this->session->set_userdata('registerStep', 5);
@@ -99,7 +101,6 @@ class Admin extends CI_Controller{
     		$this->form_validation->set_rules('layout', 'Layout', 'trim|required|in_list[ONE,TWO,THREE]');
 	    	$this->form_validation->set_rules('type_fidelity', 'Type fidelity', 'trim|required|in_list[POINTS,POUNDS]');
 	    	if($this->form_validation->run()){
-	    		$this->load->model('AdminModel','admin');
 	    		if($this->admin->insert_complete()){
 	    			$this->session->unset_userdata('registerStep');
 	    			$user = $this->session->userdata('company');
@@ -122,7 +123,7 @@ class Admin extends CI_Controller{
     
     
     public function confirm_step_three($hash){
-    	$this->load->model('AdminModel','admin');
+
     	$user = $this->admin->confirm_step_three($hash);
     	if($user){
     		$this->session->set_userdata('registerStep', 4);
@@ -130,6 +131,29 @@ class Admin extends CI_Controller{
     		redirect('../register');
     	}else{
     		redirect();
+    	}
+    }
+    
+    public function score(){
+    	if($this->session->userdata('logged')){
+	        $this->form_validation->set_rules('user', 'User', 'required|trim|integer');
+	        if($this->session->userdata('company')->type_fidelity == 'POUNDS'){
+	        	$_POST['amount'] = filter_var($this->input->post('amount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+	        	$this->form_validation->set_rules('amount', 'Amount', 'required|trim|decimal');
+	        }else{
+	        	$this->form_validation->set_rules('amount', 'Amount', 'required|trim|greater_than[0]|less_than_equal_to[1]');
+	        }
+			if($this->form_validation->run()){
+    			if($this->admin->score()){
+    				$this->acolyte->res_form("Success!", '/');
+    			}else{
+    				$this->acolyte->res_form("Failed, sorry ):", '/');
+    			}
+			}else{
+			    $this->acolyte->res_form("Oops incorret informations, try again.", '/');
+			}
+    	}else{
+    	    redirect();   
     	}
     }
 	

@@ -144,8 +144,8 @@ function load(type){
             $('.loading-wrapper').css('display', 'flex');
             break;
         case 'pagination':
-            $('.loading-pagination').css('display', 'block');
             stopPage();
+            $('.loading-pagination').css('display', 'block');
             break;
         default:
     }
@@ -157,8 +157,8 @@ function hide(type){
             $('.loading-wrapper').fadeOut();
             break;
         case 'pagination':
-            $('.loading-pagination').fadeOut();
             startPage();
+            $('.loading-pagination').fadeOut();
             break;
         default:
     }

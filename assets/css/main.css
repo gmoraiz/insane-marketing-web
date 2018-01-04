@@ -1,5 +1,9 @@
 html{
-    font-family: 'Quattrocento', serif;
+    font-family: 'Quattrocento', serif!important;
+}
+
+.own-autocomplete{
+    font-family: 'Quattrocento', serif!important;
 }
 
 html,body{
@@ -103,6 +107,10 @@ header nav{
 
 .layout-wrapper input[type="radio"]:checked+label img{
     box-shadow: 8px 8px 10px #aaa;
+}
+
+#user-selected-card{
+    display:none;
 }
 
 

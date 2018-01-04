@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </li>
     <li <?php if(isset($index)) echo 'class="active"'; ?>>
         <a href="<?= base_url() ?>">
-            <i class="material-icons">assistant_photo</i>Init
+            <i class="material-icons">add_shopping_cart</i>Cashier
         </a>
     </li>
     <li <?php if(isset($message)) echo 'class="active"'; ?>>

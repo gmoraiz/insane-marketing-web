@@ -6,7 +6,7 @@ class RewardModel extends CI_Model{
     public function insert(){
         $data = array(
             'description' => $this->input->post('description'),
-            'required'    => filter_var($this->input->post('required'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+            'required'    => $this->input->post('required'),
             'company_id'  => $this->session->userdata('company')->id,
             'picture'     => $this->input->post('picture')
         );
@@ -20,7 +20,7 @@ class RewardModel extends CI_Model{
      public function update($id){
         $data = array(
             'description' => $this->input->post('description'),
-            'required'    => filter_var($this->input->post('required'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION)
+            'required'    => $this->input->post('required')
         );
         if(!empty($this->input->post('picture'))){
             $data['picture'] =  $this->input->post('picture');

@@ -20,6 +20,27 @@ class AdminModel extends CI_Model{
         }
         return true;
     }
+    
+    public function score(){
+        $data = array(
+            'amount'     => $this->input->post('amount'),
+            'company_id' => $this->session->userdata('company')->id,
+            'user_id'    => $this->input->post('user')
+        );
+        $this->db->insert('fidelity', $data);
+        if($this->db->affected_rows() == -1){
+             return false;
+        }
+        return true;
+    }
+    
+    public function fidelities($pagination = 0){
+        $this->db->select("user.name, user.phone, concat('£', format(fidelity.amount, 2)) AS amount");
+        $this->db->join('user', 'fidelity.user_id = user.id');
+        $this->db->limit(PAGINATION_COUNT, $pagination);
+        $this->db->order_by('fidelity.id', 'DESC');
+        return $this->db->get_where('fidelity', array('company_id' => $this->session->userdata('company')->id))->result();
+    }
 
     public function login(){
         $this->db->select('c.*, a.username, a.master, a.name AS admin');

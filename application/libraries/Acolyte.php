@@ -13,7 +13,7 @@ class Acolyte {
     public function res_ajax($cd,$msg,$data = null){
 	    $this->CI->output->set_content_type('application/json')
 		                  ->set_status_header($cd)
-			              ->set_output(json_encode(array("msg" => $msg, "data" => $data), JSON_NUMERIC_CHECK))
+			              ->set_output(json_encode($msg != null ? array("msg" => $msg, "data" => $data) : $data, JSON_NUMERIC_CHECK))
 			              ->_display();
 	    exit;
 	}

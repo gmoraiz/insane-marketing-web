@@ -11,6 +11,8 @@ class Reward extends CI_Controller{
     public function insert(){
     	if($this->session->userdata('logged')){
 	        $this->form_validation->set_rules('description', 'Name', 'required');
+	        
+	        
 	        $this->form_validation->set_rules('required', 'Required', 'required|trim');
 			if($this->form_validation->run()){
 			    if($this->upload_picture()){

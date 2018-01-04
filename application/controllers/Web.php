@@ -15,13 +15,21 @@ class Web extends CI_Controller{
 				$this->session->set_userdata('registerStep', 5);
 				redirect('/register');
 			}
-			$data['body'] = "index";
+			$this->load->model('AdminModel','admin');
+			$data['fidelities'] = $this->admin->fidelities($this->pagination);
+			if($this->pagination){
+				$this->load->view('lists/index', $data);
+			}else{
+				$data['body'] = "index";
+				$this->load->view('templates/html', $data);
+			}
 		}else if($this->session->userdata('isNotFirstAccess')){
 			$data['body'] = "login";
+			$this->load->view('templates/html', $data);
 		}else{
 			$data['body'] = "first-access";
+			$this->load->view('templates/html', $data);
 		}
-		$this->load->view('templates/html', $data);
 	}
 	
 	public function message(){
