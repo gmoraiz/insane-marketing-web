@@ -71,7 +71,7 @@ class Admin extends CI_Controller{
     
     public function register_login(){
     	if($this->session->userdata('registerStep') == 4){
-    		$this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[60]|is_unique[admin.username]');
+    		$this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[30]|is_unique[admin.username]');
 	    	$this->form_validation->set_rules('password', 'Password', 'trim|required|max_length[30]');
 	    	if($this->form_validation->run()){
 	    		$_POST['name'] = $this->session->userdata('company')->owner;
@@ -156,6 +156,62 @@ class Admin extends CI_Controller{
     	    redirect();   
     	}
     }
+    
+/* ADMIN INSERT, DELETE, UPDATE */
+    
+     public function insert_login(){
+    	if($this->session->userdata('logged')){
+	        $this->form_validation->set_rules('name', 'Name', 'required|max_length[60]');
+	        $this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[30]|is_unique[admin.username]');
+	    	$this->form_validation->set_rules('password', 'Password', 'trim|required|max_length[30]');
+			if($this->form_validation->run()){
+    			if($this->admin->insert_login()){
+    				$this->acolyte->res_form("Success!", '/administrator');
+    			}else{
+    				$this->acolyte->res_form("Failed, sorry ):", '/administrator');
+    			}
+			}else{
+			    $this->acolyte->res_form("Oops incorret informations, try again.", '/administrator');
+			}
+    	}else{
+    	    redirect();   
+    	}
+    }
+    
+    public function update_login($id){
+    	if($this->session->userdata('logged')){
+	        $this->form_validation->set_rules('name', 'Name', 'required|max_length[60]');
+	        $this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[30]');
+			if($this->form_validation->run()){
+				if($this->acolyte->is_unique_update($id, 'admin', 'username', $this->input->post('username'))){
+	    			if($this->admin->update_login($id)){
+	    				$this->acolyte->res_form("Success!", '/administrator/' . $id);
+	    			}else{
+	    				$this->acolyte->res_form("Failed, sorry ): Did you change some information?", '/administrator/' . $id);
+	    			}
+				}else{
+					$this->acolyte->res_form("Username already exist.", '/administrator/' . $id);
+				}
+			}else{
+			    $this->acolyte->res_form("Oops incorret informations, try again.", '/administrator/' . $id);
+			}
+    	}else{
+    	    redirect();   
+    	}
+    }
+    
+    public function delete_login($id){
+    	if($this->session->userdata('logged')){
+    		if($this->admin->delete($id)){
+    			$this->acolyte->res_ajax(200, "Deleted with success.", true);
+    		}else{
+    			$this->acolyte->res_ajax(202, "Wasn't possible delete it.");
+    		}
+    	}else{
+    		$this->acolyte->res_ajax(401, "You haven't authorization.");
+    	}
+    }
+    
 	
 	private function upload_picture(){
 		if(!empty($_FILES['picture']['name'])){

@@ -58,6 +58,32 @@ class Web extends CI_Controller{
 		}
 	}
 	
+	public function admin(){
+			if($this->session->userdata('logged')){
+			$this->load->model('AdminModel','admin');
+			$data['administrators'] = $this->admin->select(null, $this->pagination);
+			if($this->pagination){
+				$this->load->view('lists/administrators', $data);
+			}else{
+				$data['body'] = "administrator";
+				$this->load->view('templates/html', $data);
+			}
+		}else{
+			redirect();
+		}
+	}
+	
+	public function admin_edit($id){
+		if($this->session->userdata('logged')){
+			$this->load->model('AdminModel','admin');
+			$data['administrator'] = $this->admin->select($id);
+			$data['body'] = "edit/administrator";
+			$this->load->view('templates/html', $data);
+		}else{
+			redirect();
+		}
+	}
+	
 	public function reward(){
 		if($this->session->userdata('logged')){
 			$this->load->model('RewardModel','reward');

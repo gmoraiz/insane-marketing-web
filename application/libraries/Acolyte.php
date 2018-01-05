@@ -22,5 +22,16 @@ class Acolyte {
 		$this->CI->session->set_flashdata('MSG', $msg);
 		$route == null ? redirect(base_url(),'refresh') : redirect($route,'refresh');
 	}
+	
+	public function is_unique_update($id, $table, $field, $value)
+    {
+        $this->CI->db->where('id !=', $id);
+        $this->CI->db->where($field, $value);
+        $this->CI->db->get($table);
+        if($this->CI->db->affected_rows())
+            return false;
+        else
+            return true;
+    }
 
 }

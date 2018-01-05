@@ -21,6 +21,16 @@ class AdminModel extends CI_Model{
         return true;
     }
     
+    public function select($id = null, $pagination = 0){
+        $this->db->where('master', false);
+        if($id){
+            return $this->db->get_where('admin', array('id' => $id, 'company_id' => $this->session->userdata('company')->id))->row();
+        }
+        $this->db->limit(PAGINATION_COUNT, $pagination);
+        $this->db->order_by('name', 'ASC');
+        return $this->db->get_where('admin', array('company_id' => $this->session->userdata('company')->id))->result();
+    }
+    
     public function score(){
         $data = array(
             'amount'     => $this->input->post('amount'),
@@ -68,6 +78,24 @@ class AdminModel extends CI_Model{
              return false;
         }
         return true;
+    }
+    
+    public function update_login($id, $is_master = false){
+        $data = array(
+            'username'   => $this->input->post('username'),
+            'master'     => $is_master,
+            'name'       => $this->input->post('name')
+        );
+        
+        if($this->input->post('password')){
+            $data['password'] = hash('sha256', $this->input->post('password'));
+        }
+        
+        $this->db->update('admin', array('id' => $id, 'company_id' => $this->session->userdata('company')->id), $data);
+        if($this->db->affected_rows())
+            return true;
+        else
+            return false;
     }
     
     public function insert_complete(){

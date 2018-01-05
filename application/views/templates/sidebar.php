@@ -29,6 +29,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <i class="material-icons">star_border</i>Rewards
         </a>
     </li>
+    <?php if($this->session->userdata('company')->master): ?>
+        <li <?php if(isset($administrator)) echo 'class="active"'; ?>>
+            <a href="<?= base_url() ?>administrator">
+                <i class="material-icons">person</i>Administrators
+            </a>
+        </li>
+    <?php endif; ?>
     
     <li>
         <div class="divider"></div>
@@ -36,11 +43,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <li>
         <a class="subheader">Settings</a>
     </li>
+    <?php if($this->session->userdata('company')->master): ?>
     <li <?php if(isset($salao)) echo 'class="active"'; ?>>
         <a href="<? echo base_url() ?>edit">
             <i class="material-icons">home</i>Edit
         </a>
     </li>
+    <?php endif; ?>
     <li>
         <a href="#">
             <form method="post" id="logout" action="logout">
