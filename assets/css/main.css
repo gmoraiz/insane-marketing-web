@@ -113,6 +113,10 @@ header nav{
     display:none;
 }
 
+.row-with-image{
+    margin-bottom:0px!important;
+}
+
 
 
 /* REGISTER */

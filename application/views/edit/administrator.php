@@ -12,7 +12,7 @@ $this->load->view('templates/toast');
         <form class="row" method="POST" action="<?= $administrator->id ?>">
             <div class="row">
                 <div class="input-field col xl5 l10 s12">
-                    <input id="name" type="text" name="name" class="validate" value="<?= $administrator->name ?>" required></input>
+                    <input id="name" type="text" name="nick" class="validate" value="<?= $administrator->nick ?>" required></input>
                     <label for="name">Name</label>
                 </div>
             </div>

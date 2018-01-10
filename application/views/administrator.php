@@ -13,7 +13,7 @@ $this->load->view('templates/toast');
         <form class="row dynamic-form" method="POST" action="administrator">
             <div class="row">
                 <div class="input-field col xl5 l10 s12">
-                    <input id="name" type="text" name="name" class="validate" required></input>
+                    <input id="name" type="text" name="nick" class="validate" required></input>
                     <label for="name">Name</label>
                 </div>
             </div>

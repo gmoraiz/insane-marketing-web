@@ -27,7 +27,7 @@ class AdminModel extends CI_Model{
             return $this->db->get_where('admin', array('id' => $id, 'company_id' => $this->session->userdata('company')->id))->row();
         }
         $this->db->limit(PAGINATION_COUNT, $pagination);
-        $this->db->order_by('name', 'ASC');
+        $this->db->order_by('nick', 'ASC');
         return $this->db->get_where('admin', array('company_id' => $this->session->userdata('company')->id))->result();
     }
     
@@ -53,7 +53,7 @@ class AdminModel extends CI_Model{
     }
 
     public function login(){
-        $this->db->select('c.*, a.username, a.master, a.name AS admin');
+        $this->db->select('c.*, a.username, a.master, a.nick, a.id AS admin_id');
         $this->db->from('company AS c');
         $this->db->join('admin AS a','a.company_id = c.id');
         $this->db->where('username', $this->input->post('username'));
@@ -65,12 +65,20 @@ class AdminModel extends CI_Model{
         return $user;
     }
     
+    public function select_master(){
+        $this->db->select('c.*, a.username, a.master, a.nick, a.id AS admin_id');
+        $this->db->from('company AS c');
+        $this->db->join('admin AS a','a.company_id = c.id');
+        $this->db->where('a.id', $this->session->userdata('company')->admin_id);
+        return $this->db->get()->row();
+    }
+    
     public function insert_login($is_master = false){
         $data = array(
             'username'   => $this->input->post('username'),
             'password'   => hash('sha256', $this->input->post('password')),
             'master'     => $is_master,
-            'name'       => $this->input->post('name'),
+            'nick'       => $this->input->post('nick'),
             'company_id' => $this->session->userdata('company')->id
         );
         $this->db->insert('admin', $data);
@@ -84,18 +92,51 @@ class AdminModel extends CI_Model{
         $data = array(
             'username'   => $this->input->post('username'),
             'master'     => $is_master,
-            'name'       => $this->input->post('name')
+            'nick'       => $this->input->post('nick')
         );
         
         if($this->input->post('password')){
             $data['password'] = hash('sha256', $this->input->post('password'));
         }
         
-        $this->db->update('admin', array('id' => $id, 'company_id' => $this->session->userdata('company')->id), $data);
+        $this->db->update('admin', $data, array('id' => $id, 'company_id' => $this->session->userdata('company')->id));
         if($this->db->affected_rows())
             return true;
         else
             return false;
+    }
+    
+    public function update(){
+        $data = array(
+            'name' => $this->input->post('name'),
+            'owner'=> $this->input->post('owner'),
+            'address'=> $this->input->post('address'),
+            'email'=> $this->input->post('email'),
+            'type_fidelity'=> $this->input->post('type_fidelity'),
+            'layout'=> $this->input->post('layout')
+        );
+        if(!empty($this->input->post('picture'))){
+            $this->db->set('picture', $this->input->post('picture'));
+        }
+        $this->db->update('company', $data, array('id' => $this->session->userdata('company')->id));
+        
+        $affectedCompany = $this->db->affected_rows();
+        
+        $data = array(
+            'username' => $this->input->post('username'),
+            'nick' => $this->input->post('owner')
+        );
+        if(!empty($this->input->post('password'))){
+            $this->db->set('password', hash('sha256', $this->input->post('password')));
+        }
+        $this->db->update('admin', $data, array('id' => $this->session->userdata('company')->admin_id));
+        
+        $affectedAdmin = $this->db->affected_rows();
+        
+        if(!$affectedCompany && !$affectedAdmin){
+            return false;
+        }
+        return true;
     }
     
     public function insert_complete(){

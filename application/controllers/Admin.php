@@ -161,7 +161,7 @@ class Admin extends CI_Controller{
     
      public function insert_login(){
     	if($this->session->userdata('logged')){
-	        $this->form_validation->set_rules('name', 'Name', 'required|max_length[60]');
+	        $this->form_validation->set_rules('nick', 'Nick', 'required|max_length[60]');
 	        $this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[30]|is_unique[admin.username]');
 	    	$this->form_validation->set_rules('password', 'Password', 'trim|required|max_length[30]');
 			if($this->form_validation->run()){
@@ -178,9 +178,51 @@ class Admin extends CI_Controller{
     	}
     }
     
+    public function update(){
+    	if($this->session->userdata('logged') && $this->session->userdata('company')->master){
+    		$id = $this->session->userdata('company')->id;
+    		$this->form_validation->set_rules('name', 'Name', 'required|max_length[60]');
+	        $this->form_validation->set_rules('owner', 'Owner', 'required|max_length[60]');
+	    	$this->form_validation->set_rules('address', 'Address', 'required|max_length[255]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|xss_clean|max_length[50]');
+			$this->form_validation->set_rules('layout', 'Layout', 'trim|required|in_list[ONE,TWO,THREE]');
+	    	$this->form_validation->set_rules('type_fidelity', 'Type fidelity', 'trim|required|in_list[POINTS,POUNDS]');
+	    	$this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[30]');
+	    	if($this->form_validation->run()){
+				if($this->acolyte->is_unique_update($this->session->userdata('company')->admin_id, 'admin', 'username', $this->input->post('username'))){
+					if($this->acolyte->is_unique_update($id, 'company', 'email', $this->input->post('email'))){
+						if($this->acolyte->is_unique_update($id, 'company', 'name', $this->input->post('name'))){
+							if($this->upload_picture()){
+				    			if($this->admin->update()){
+				    				$user = $this->admin->select_master();
+		    						$this->session->set_userdata('company', $user);
+				    				$this->acolyte->res_form("Success!", '/setting');
+				    			}else{
+				    				$this->acolyte->res_form("Failed, sorry ): Did you change some information?", '/setting');
+				    			}
+							}else{
+								$this->acolyte->res_form("Image not uploaded, try again..", '/setting');
+							}
+						}else{
+							$this->acolyte->res_form("Company name already exist.", '/setting');
+						}
+					}else{
+						$this->acolyte->res_form("Email already exist.", '/setting');
+					}
+				}else{
+					$this->acolyte->res_form("Username already exist.", '/setting');
+				}
+			}else{
+			    $this->acolyte->res_form("Oops incorret informations, try again.", '/setting');
+			}
+    	}else{
+    	    redirect();   
+    	}
+    }
+    
     public function update_login($id){
     	if($this->session->userdata('logged')){
-	        $this->form_validation->set_rules('name', 'Name', 'required|max_length[60]');
+	        $this->form_validation->set_rules('nick', 'Nick', 'required|max_length[60]');
 	        $this->form_validation->set_rules('username', 'Username', 'trim|required|max_length[30]');
 			if($this->form_validation->run()){
 				if($this->acolyte->is_unique_update($id, 'admin', 'username', $this->input->post('username'))){

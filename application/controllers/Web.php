@@ -32,6 +32,32 @@ class Web extends CI_Controller{
 		}
 	}
 	
+	public function client(){
+		if($this->session->userdata('logged')){
+			$this->load->model('UserModel','user');
+			$data['clients'] = $this->user->select(null, $this->pagination);
+			if($this->pagination){
+				$this->load->view('lists/client', $data);
+			}else{
+				$data['body'] = "client";
+				$this->load->view('templates/html', $data);
+			}
+		}else{
+			redirect();
+		}
+	}
+	
+	public function client_edit($id){
+		if($this->session->userdata('logged')){
+			$this->load->model('UserModel','user');
+			$data['client'] = $this->user->select($id);
+			$data['body'] = "edit/client";
+			$this->load->view('templates/html', $data);
+		}else{
+			redirect();
+		}
+	}
+	
 	public function message(){
 			if($this->session->userdata('logged')){
 			$this->load->model('MessageModel','message');
@@ -104,6 +130,16 @@ class Web extends CI_Controller{
 			$this->load->model('RewardModel','reward');
 			$data['reward'] = $this->reward->select($id);
 			$data['body'] = "edit/reward";
+			$this->load->view('templates/html', $data);
+		}else{
+			redirect();
+		}
+	}
+	
+	public function setting(){
+		if($this->session->userdata('logged') && $this->session->userdata('company')->master){
+			$data['administrator'] = $this->session->userdata('company');
+			$data['body'] = "setting";
 			$this->load->view('templates/html', $data);
 		}else{
 			redirect();

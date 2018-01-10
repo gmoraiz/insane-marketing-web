@@ -12,11 +12,20 @@ $route['logout']['POST'] = 'admin/logout';
 
 $route['by_phone/(:any)']['GET'] = 'user/by_phone/$1';
 
+$route['setting']['GET']   = 'web/setting';
+$route['setting']['POST']  = 'admin/update';
+
 $route['administrator']['GET'] = 'web/admin';
 $route['administrator']['POST'] = 'admin/insert_login';
 $route['administrator/(:num)']['DELETE'] = 'admin/delete_login/$1';
 $route['administrator/(:num)']['GET'] = 'web/admin_edit/$1';
 $route['administrator/(:num)']['POST'] = 'admin/update_login/$1';
+
+$route['client']['GET'] = 'web/client';
+$route['client']['POST'] = 'user/insert';
+$route['client/(:num)']['DELETE'] = 'user/delete/$1';
+$route['client/(:num)']['GET'] = 'web/client_edit/$1';
+$route['client/(:num)']['POST'] = 'user/update/$1';
 
 $route['reward']['GET'] = 'web/reward';
 $route['reward']['POST'] = 'reward/insert';

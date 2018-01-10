@@ -23,9 +23,9 @@ class Acolyte {
 		$route == null ? redirect(base_url(),'refresh') : redirect($route,'refresh');
 	}
 	
-	public function is_unique_update($id, $table, $field, $value)
+	public function is_unique_update($id, $table, $field, $value, $idField = 'id')
     {
-        $this->CI->db->where('id !=', $id);
+        $this->CI->db->where($idField . '!=', $id);
         $this->CI->db->where($field, $value);
         $this->CI->db->get($table);
         if($this->CI->db->affected_rows())

@@ -4,9 +4,9 @@
         <span class="title"><?= $reward->description ?></span>
         <p>
             <?php if($this->session->userdata('company')->type_fidelity == 'POINTS'): ?>
-                <b class="yellow-text text-darken-3"><?= $reward->required ?> Points</b>
+                <b class="yellow-text text-darken-3"><?= intval($reward->required) ?> Points</b>
             <?php else: ?>
-                <b class="green-text"><?= $reward->required ?></b>
+                <b class="green-text"><?= '£' . number_format($reward->required,2,'.',',') ?></b>
             <?php endif; ?>
         </p>
         <a href="reward/<?=$reward->id?>" class="primary-content tooltipped" data-position="right" data-delay="100" data-tooltip="View/Update it">

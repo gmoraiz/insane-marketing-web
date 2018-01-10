@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="background">
                 <img width="300px" src="<?= base_url() . 'assets/img/wallpaper.png' ?>">
             </div>
-            <a href="#!user"><span class="white-text name" style="margin:0">Hi, <?= $this->session->userdata('company')->admin ?></span></a>
+            <a href="#!user"><span class="white-text name" style="margin:0">Hi, <?= $this->session->userdata('company')->nick ?></span></a>
             <a href="#!user"><img class="circle" src="<?= base_url() . 'assets/img/company/' . $this->session->userdata('company')->picture ?>"></a>
             <a href="#!name"><span class="white-text name"><?= $this->session->userdata('company')->name ?></span></a>
             <a href="#!email"><span class="white-text email"><?= $this->session->userdata('company')->email ?></span></a>
@@ -17,6 +17,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <li <?php if(isset($index)) echo 'class="active"'; ?>>
         <a href="<?= base_url() ?>">
             <i class="material-icons">add_shopping_cart</i>Cashier
+        </a>
+    </li>
+    <li <?php if(isset($client)) echo 'class="active"'; ?>>
+        <a href="<?= base_url() ?>client">
+            <i class="material-icons">people</i>Clients
         </a>
     </li>
     <li <?php if(isset($message)) echo 'class="active"'; ?>>
@@ -32,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <?php if($this->session->userdata('company')->master): ?>
         <li <?php if(isset($administrator)) echo 'class="active"'; ?>>
             <a href="<?= base_url() ?>administrator">
-                <i class="material-icons">person</i>Administrators
+                <i class="material-icons">record_voice_over</i>Administrators
             </a>
         </li>
     <?php endif; ?>
@@ -41,12 +46,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="divider"></div>
     </li>
     <li>
-        <a class="subheader">Settings</a>
+        <a class="subheader">Options</a>
     </li>
     <?php if($this->session->userdata('company')->master): ?>
-    <li <?php if(isset($salao)) echo 'class="active"'; ?>>
-        <a href="<? echo base_url() ?>edit">
-            <i class="material-icons">home</i>Edit
+    <li <?php if(isset($setting)) echo 'class="active"'; ?>>
+        <a href="<?= base_url() ?>setting">
+            <i class="material-icons">settings</i>Settings
         </a>
     </li>
     <?php endif; ?>
