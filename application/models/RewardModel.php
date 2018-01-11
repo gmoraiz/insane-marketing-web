@@ -46,6 +46,14 @@ class RewardModel extends CI_Model{
         return $this->db->get_where('reward', array('company_id' => $this->session->userdata('company')->id,  'deleted' => FALSE))->result();
     }
     
+    public function is_reward_possible($uid, $rid = null){
+        $this->db->where('required <=', '(SELECT SUM(amount) AS amount FROM fidelity WHERE user_id = ' . $uid .')', FALSE);
+        if($rid){
+            return $this->db->get_where('reward', array('id' => $rid))->row();
+        }
+        return $this->db->get('reward')->result();
+    }
+    
     public function delete($id){
         $this->db->update('reward', array('deleted' => true), array('id' => $id, 'company_id' => $this->session->userdata('company')->id));
         if($this->db->affected_rows())

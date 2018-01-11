@@ -19,13 +19,13 @@ $this->load->view('templates/loading');
             <p class="red-text text-darken-4 label-p">Choose one layout:</p>
             <div class='input-field layout-wrapper'>
                 <input name="layout" type="radio" id="layout1" value="ONE" />
-                <label for="layout1"><img width="300px" class="responsive-img" src="assets/img/template.png" alt="Template" required/></label>
+                <label for="layout1"><img width="300px" class="responsive-img" src="assets/img/template.png" alt="Template"/></label>
                 
                 <input name="layout" type="radio" id="layout2" value="TWO" />
-                <label for="layout2"><img width="300px" class="responsive-img" src="assets/img/template.png" alt="Template" required/></label>
+                <label for="layout2"><img width="300px" class="responsive-img" src="assets/img/template.png" alt="Template"/></label>
                 
                 <input name="layout" type="radio" id="layout3" value="THREE" />
-                <label for="layout3"><img width="300px" class="responsive-img" src="assets/img/template.png" alt="Template" required/></label>
+                <label for="layout3"><img width="300px" class="responsive-img" src="assets/img/template.png" alt="Template"/></label>
             </div>
             <p class="red-text text-darken-4 label-p">Choose type fidelity:</p>
             <div class='input-field center-align type-fidelity'>

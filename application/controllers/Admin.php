@@ -134,6 +134,24 @@ class Admin extends CI_Controller{
     	}
     }
     
+    public function checkin_monitor($cid){
+    	if($this->session->userdata('logged')){
+    		$this->load->model('UserModel', 'user');
+    		if($cid){
+    			$this->user->delete_checkin($cid);
+    		}
+	    	while(true){
+	    		$user = $this->user->last_checkin();
+	    		if($user){
+	    			$this->acolyte->res_ajax(200, null, $user);
+	    		}
+	    		sleep(2);
+	    	}
+	    }else{
+	    	redirect();
+	    }
+    }
+    
     public function score(){
     	if($this->session->userdata('logged')){
 	        $this->form_validation->set_rules('user', 'User', 'required|trim|integer');
@@ -144,11 +162,43 @@ class Admin extends CI_Controller{
 	        	$this->form_validation->set_rules('amount', 'Amount', 'required|trim|greater_than[0]|less_than_equal_to[1]');
 	        }
 			if($this->form_validation->run()){
-    			if($this->admin->score()){
-    				$this->acolyte->res_form("Success!", '/');
+				$this->load->model('UserModel','user');
+    			if($this->user->insert_fidelity($this->input->post('amount'), $this->input->post('user'))){
+    				$this->load->model('RewardModel', 'reward');
+    				$rewards = $this->reward->is_reward_possible($this->input->post('user'));
+    				if($rewards){
+    					$data['body'] = "chance";
+    					$data['rewards'] = $rewards;
+    					$data['user'] = $this->input->post('user');
+						$this->load->view('templates/html', $data);
+    				}else{
+    					$this->acolyte->res_form("Success!", '/');
+    				}
     			}else{
     				$this->acolyte->res_form("Failed, sorry ):", '/');
     			}
+			}else{
+			    $this->acolyte->res_form("Oops incorret informations, try again.", '/');
+			}
+    	}else{
+    	    redirect();   
+    	}
+    }
+    
+    public function to_reward(){
+    	if($this->session->userdata('logged')){
+	        $this->form_validation->set_rules('user', 'User', 'required|trim|integer');
+	        $this->form_validation->set_rules('reward', 'Reward', 'required|trim|integer');
+			if($this->form_validation->run()){
+				$this->load->model('RewardModel', 'reward');
+				$reward = $this->reward->is_reward_possible($this->input->post('user'), $this->input->post('reward'));
+				if($reward){
+	    			if($this->admin->to_reward($reward)){
+	    				$this->acolyte->res_form("Success", '/');
+	    			}else{
+	    				$this->acolyte->res_form("Wasn't possible to reward user ):", '/');
+	    			}
+				}
 			}else{
 			    $this->acolyte->res_form("Oops incorret informations, try again.", '/');
 			}

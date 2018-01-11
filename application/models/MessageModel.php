@@ -46,8 +46,7 @@ class MessageModel extends CI_Model{
     }
     
     public function delete($id){
-        $this->db->where('id', $id);
-        $this->db->delete('message');
+        $this->db->delete('message', array('id' => $id));
         if($this->db->affected_rows())
             return true;
         else

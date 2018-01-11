@@ -44,6 +44,23 @@ class AdminModel extends CI_Model{
         return true;
     }
     
+    public function to_reward($reward){
+        $data = array(
+            'user_id'   => $this->input->post('user'),
+            'reward_id' => $this->input->post('reward'),
+            'created'   => date('Y-m-d H:i')
+        );
+        $this->db->insert('history', $data);
+        if($this->db->affected_rows() == -1){
+             return false;
+        }
+        $this->load->model('UserModel', 'user');
+        $user_points = $this->user->points($this->input->post('user'));
+        $this->user->delete_fidelity($this->input->post('user'));
+        $this->user->insert_fidelity($user_points - $reward->required, $this->input->post('user'));
+        return true;
+    }
+    
     public function fidelities($pagination = 0){
         $this->db->select("user.name, user.phone, concat('£', format(fidelity.amount, 2)) AS amount");
         $this->db->join('user', 'fidelity.user_id = user.id');

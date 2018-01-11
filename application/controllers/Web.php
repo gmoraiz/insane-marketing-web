@@ -32,6 +32,11 @@ class Web extends CI_Controller{
 		}
 	}
 	
+	public function chance(){
+		$data['body'] = "chance";
+		$this->load->view('templates/html', $data);
+	}
+	
 	public function client(){
 		if($this->session->userdata('logged')){
 			$this->load->model('UserModel','user');
