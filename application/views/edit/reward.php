@@ -12,7 +12,13 @@ $this->load->view('templates/toast');
         <form class="row" method="POST" action="<?= $reward->id ?>" enctype="multipart/form-data">
             <div class="row">
                 <div class="input-field col xl5 l10 s12">
-                    <textarea id="description" name="description" class="materialize-textarea" required><?= $reward->description ?></textarea>
+                    <input class='validate' type='text' name='title' id='title' value="<?= $reward->title ?>" required/>
+                    <label for='title'>Title</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col xl5 l10 s12">
+                    <textarea id="description" name="description" class="materialize-textarea"><?= $reward->description ?></textarea>
                     <label for="description">Description</label>
                 </div>
             </div>
@@ -34,8 +40,6 @@ $this->load->view('templates/toast');
                             <option value="6"  <?php if($reward->required == 6)  echo 'selected';?> >6</option>
                             <option value="8"  <?php if($reward->required == 8)  echo 'selected';?> >8</option>
                             <option value="10" <?php if($reward->required == 10) echo 'selected';?> >10</option>
-                            <option value="12" <?php if($reward->required == 12) echo 'selected';?> >12</option>
-                            <option value="24" <?php if($reward->required == 24) echo 'selected';?> >24</option>
                         </select>
                         <label>Points</label>
                     </div>

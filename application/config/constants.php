@@ -84,4 +84,7 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
+define('COMPANY_TEST_ID', 33);
 define('PAGINATION_COUNT', 10);
+define('TOKEN_SELECT_COMPANY', 'KL123UHhuhudpjy8qvekvqivmqebyhqeyveqbveqadusad21354');
+define('FIREBASE_KEY', "AAAACa0Qoww:APA91bFjjrJGcZcbkb9kGBAeDVWPgr4psqP8aOYWd7DWFHGRcbA47RYJM6o13kU87I2HV_V1LCCghardvAjPwHaLhO9dCUPzFPcHejQo6vYUHgQ6pJ2bAZOX4Hd0nqk3rpI4lKCVV5NS");

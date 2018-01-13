@@ -5,6 +5,7 @@ class RewardModel extends CI_Model{
     
     public function insert(){
         $data = array(
+            'title' => $this->input->post('title'),
             'description' => $this->input->post('description'),
             'required'    => $this->input->post('required'),
             'company_id'  => $this->session->userdata('company')->id,
@@ -19,6 +20,7 @@ class RewardModel extends CI_Model{
     
      public function update($id){
         $data = array(
+            'title' => $this->input->post('title'),
             'description' => $this->input->post('description'),
             'required'    => $this->input->post('required')
         );
@@ -44,6 +46,14 @@ class RewardModel extends CI_Model{
         $this->db->limit(PAGINATION_COUNT, $pagination);
         $this->db->order_by('id', 'DESC');
         return $this->db->get_where('reward', array('company_id' => $this->session->userdata('company')->id,  'deleted' => FALSE))->result();
+    }
+    
+    public function select_to_mobile($id = null){
+        if($id){
+            return $this->db->get_where('reward', array('id' => $id, 'company_id' => COMPANY_TEST_ID, 'deleted' => FALSE))->row();
+        }
+        $this->db->order_by('id', 'DESC');
+        return $this->db->get_where('reward', array('company_id' => COMPANY_TEST_ID,  'deleted' => FALSE))->result();
     }
     
     public function is_reward_possible($uid, $rid = null){

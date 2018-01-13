@@ -3,6 +3,11 @@
         <span class="title"><b><?= $client->name ?></b></span><br>
         <?= $client->email ?></br>
         <?= $client->phone ?></br>
+        <?php if($this->session->userdata('company')->type_fidelity == 'POUNDS'): ?>
+            <b>Score: </b><?= '£' . number_format($client->points,2,'.',',') ?></br>
+        <?php else: ?>
+            <b>Score: </b><?= intval($client->points) ?></br>
+        <?php endif; ?>
         <a href="client/<?=$client->id?>" class="primary-content tooltipped" data-position="right" data-delay="100" data-tooltip="View/Update it">
             <i class="material-icons small blue-text">subject</i>
         </a>

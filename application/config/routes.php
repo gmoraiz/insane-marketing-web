@@ -24,16 +24,17 @@ $route['administrator/(:num)']['POST'] = 'admin/update_login/$1';
 $route['to_reward']['POST'] = 'admin/to_reward';
 
 $route['client']['GET'] = 'web/client';
-$route['client']['POST'] = 'user/insert';
+$route['client']['POST'] = 'user/insert_by_company';
 $route['client/(:num)']['DELETE'] = 'user/delete/$1';
 $route['client/(:num)']['GET'] = 'web/client_edit/$1';
-$route['client/(:num)']['POST'] = 'user/update/$1';
+$route['client/(:num)']['POST'] = 'user/update_by_company/$1';
 
 $route['reward']['GET'] = 'web/reward';
 $route['reward']['POST'] = 'reward/insert';
 $route['reward/(:num)']['DELETE'] = 'reward/delete/$1';
 $route['reward/(:num)']['GET'] = 'web/reward_edit/$1';
 $route['reward/(:num)']['POST'] = 'reward/update/$1';
+$route['select-reward/(:num)'] = 'reward/select/$1';
 
 $route['message']['GET'] = 'web/message';
 $route['message']['POST'] = 'message/insert';
@@ -46,6 +47,16 @@ $route['register']['POST']          = 'admin/register';
 $route['register/(:any)']['GET']    = 'admin/confirm_step_three/$1';
 $route['register-login']['POST']    = 'admin/register_login';
 $route['register-complete']['POST'] = 'admin/register_complete';
+
+$route['select-company/(:any)']['GET'] = 'admin/select_to_client/$1';
+$route['select-user'] = 'user/select';
+$route['login-user']['POST'] = 'user/login';
+$route['register-user']['POST'] = 'user/register';
+
+$route['user/(:any)']['POST'] = 'user/insert/$1';
+$route['user']['PUT'] = 'user/update';
+
+$route['checkin'] = 'user/checkin';
 
 $route['score']['POST']             = 'admin/score';
 

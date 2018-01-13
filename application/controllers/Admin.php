@@ -134,6 +134,13 @@ class Admin extends CI_Controller{
     	}
     }
     
+    public function select_to_client($token){
+    	if($token == TOKEN_SELECT_COMPANY){
+    		$this->acolyte->res_ajax(200, null, $this->admin->select_to_client());
+    	}
+    	$this->acolyte->res_ajax(401, "Unauthorized");
+    }
+    
     public function checkin_monitor($cid){
     	if($this->session->userdata('logged')){
     		$this->load->model('UserModel', 'user');
@@ -172,7 +179,7 @@ class Admin extends CI_Controller{
     					$data['user'] = $this->input->post('user');
 						$this->load->view('templates/html', $data);
     				}else{
-    					$this->acolyte->res_form("Success!", '/');
+    					//$this->acolyte->res_form("Success!", '/');
     				}
     			}else{
     				$this->acolyte->res_form("Failed, sorry ):", '/');
@@ -194,7 +201,7 @@ class Admin extends CI_Controller{
 				$reward = $this->reward->is_reward_possible($this->input->post('user'), $this->input->post('reward'));
 				if($reward){
 	    			if($this->admin->to_reward($reward)){
-	    				$this->acolyte->res_form("Success", '/');
+	    				//$this->acolyte->res_form("Success", '/');
 	    			}else{
 	    				$this->acolyte->res_form("Wasn't possible to reward user ):", '/');
 	    			}

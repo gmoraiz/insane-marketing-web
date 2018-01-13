@@ -3,14 +3,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class UserModel extends CI_Model{
     
+    public function checkin($id){
+        $checkForAtualCheckIn = $this->db->get_where('checkin', array('user_id' => $id))->row();
+        if(!$checkForAtualCheckIn){
+            $data = array(
+                'user_id' => $id,
+            );
+            $this->db->insert('checkin', $data);
+            if($this->db->affected_rows() == -1){
+                 return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    public function login(){
+        $this->db->select("user.id, user.name, user.phone, user.address, user.email, user.birth, DATE_FORMAT(user.created,'%d/%m/%Y') AS created");
+        $user = $this->db->get_where('user', array('email' => $this->input->post('email'), 'password' => hash('sha256', $this->input->post('password'))))->row();
+        if($user){
+            $token = $this->acolyte->generate_token($user->email);
+            $this->db->set('token',$token);
+            $this->db->set('fcm',$this->input->post('fcm'));
+            $this->db->where('email',$user->email);
+            $this->db->update('user');
+            return $token;
+        }else
+            return false;
+    }
+    
     public function insert(){
         $data = array(
             'name'       => $this->input->post('name'),
             'phone'      => $this->input->post('phone'),
-            'password'   => hash('sha256',$this->input->post('password')),
+            'password'   => hash('sha256', $this->input->post('password')),
             'email'      => $this->input->post('email'),
             'address'    => $this->input->post('address'),
-            'birth'      => date('Y-m-d', strtotime($this->input->post('birth')))
+            'birth'      => $this->input->post('birth') ? date('Y-m-d', strtotime($this->input->post('birth'))) : NULL,
+            'created'    => date('Y-m-d')
         );
         $this->db->insert('user', $data);
         if($this->db->affected_rows() == -1){
@@ -26,7 +56,7 @@ class UserModel extends CI_Model{
             'password'   => hash('sha256',$this->input->post('password')),
             'email'      => $this->input->post('email'),
             'address'    => $this->input->post('address'),
-            'birth'      => date('Y-m-d', strtotime($this->input->post('birth')))
+            'birth'      => $this->input->post('birth') ? date('Y-m-d', strtotime($this->input->post('birth'))) : NULL
         );
         
         if($this->input->post('password')){
@@ -46,7 +76,10 @@ class UserModel extends CI_Model{
         }
         $this->db->limit(PAGINATION_COUNT, $pagination);
         $this->db->order_by('name', 'ASC');
-        return $this->db->get_where('user', array('deleted' => FALSE))->result();
+        $users = $this->db->get_where('user', array('deleted' => FALSE))->result();
+        foreach($users as $user)
+            $user->points = $this->points($user->id);
+        return $users;
     }
     
     public function by_phone($phone){
@@ -66,6 +99,16 @@ class UserModel extends CI_Model{
         $this->db->select('SUM(amount) as total');
         $points = $this->db->get_where('fidelity', array('user_id' => $id))->row();
         return $points ? $points->total : 0;
+    }
+    
+    public function is_mobile_authorized($token){
+        $this->db->select("user.id, user.name, user.phone, user.address, user.email, user.birth, DATE_FORMAT(user.created,'%d/%m/%Y') AS created");
+        $user = $this->db->get_where('user', array('token' => $token))->row();
+        if($user){
+            $user->points = $this->points($user->id);
+            return $user;
+        }
+        return false;
     }
     
     public function insert_fidelity($amount, $uid){
@@ -90,6 +133,15 @@ class UserModel extends CI_Model{
     
     public function delete_checkin($cid){
         return $this->db->delete('checkin', array('id' => $cid));
+    }
+    
+    public function get_fcm($id = null){
+        $this->db->select('fcm');
+        if($id){
+            $user = $this->db->get_where('user', array('id' => $id))->row();
+            return $user ? $user->fcm : '';
+        }
+        return $this->db->get_where('user')->result_array();
     }
     
     public function delete_fidelity($uid, $fid = null){

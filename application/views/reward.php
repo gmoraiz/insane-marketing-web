@@ -13,7 +13,13 @@ $this->load->view('templates/toast');
         <form class="row dynamic-form" method="POST" action="reward" enctype="multipart/form-data">
             <div class="row">
                 <div class="input-field col xl5 l10 s12">
-                    <textarea id="description" name="description" class="materialize-textarea" required></textarea>
+                    <input class='validate' type='text' name='title' id='title' required/>
+                    <label for='title'>Title</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col xl5 l10 s12">
+                    <textarea id="description" name="description" class="materialize-textarea"></textarea>
                     <label for="description">Description</label>
                 </div>
             </div>
@@ -35,8 +41,6 @@ $this->load->view('templates/toast');
                             <option value="6">6</option>
                             <option value="8">8</option>
                             <option value="10">10</option>
-                            <option value="12">12</option>
-                            <option value="24">24</option>
                         </select>
                         <label>Points</label>
                     </div>

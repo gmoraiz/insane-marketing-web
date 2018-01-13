@@ -1,4 +1,10 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS');
+header("Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept");
+if ( "OPTIONS" === $_SERVER['REQUEST_METHOD'] ){
+    die();
+}
 /**
  * CodeIgniter
  *

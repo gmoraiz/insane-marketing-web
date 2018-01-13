@@ -31,6 +31,10 @@ class AdminModel extends CI_Model{
         return $this->db->get_where('admin', array('company_id' => $this->session->userdata('company')->id))->result();
     }
     
+    public function select_to_client(){
+        return $this->db->get_where('company', array('id' => 33))->row();
+    }
+    
     public function score(){
         $data = array(
             'amount'     => $this->input->post('amount'),
@@ -41,6 +45,11 @@ class AdminModel extends CI_Model{
         if($this->db->affected_rows() == -1){
              return false;
         }
+        $this->load->model('UserModel','user');
+		$this->load->library('FCMNotify');
+		$this->fcmnotify->send($this->user->get_fcm($this->input->post('user')), 
+		                       "You received ".$this->input->post('amount')." points!",
+		                       "Check now rewards. Maybe you already get something with your points.");
         return true;
     }
     
@@ -58,6 +67,11 @@ class AdminModel extends CI_Model{
         $user_points = $this->user->points($this->input->post('user'));
         $this->user->delete_fidelity($this->input->post('user'));
         $this->user->insert_fidelity($user_points - $reward->required, $this->input->post('user'));
+        $this->load->model('UserModel','user');
+		$this->load->library('FCMNotify');
+		$this->fcmnotify->send($this->user->get_fcm($this->input->post('user')), 
+		                       "Congratulations, you received a reward!",
+		                       "It's ".$reward->title.".");
         return true;
     }
     

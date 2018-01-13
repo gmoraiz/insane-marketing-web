@@ -1,7 +1,7 @@
 <?php foreach($rewards as $reward): ?>
     <li class="collection-item avatar">
         <img src="assets/img/reward/<?= $reward->picture?>" alt="" class=" circle materialboxed responsive-img">
-        <span class="title"><?= $reward->description ?></span>
+        <span class="title"><?= $reward->title ?></span>
         <p>
             <?php if($this->session->userdata('company')->type_fidelity == 'POINTS'): ?>
                 <b class="yellow-text text-darken-3"><?= intval($reward->required) ?> Points</b>

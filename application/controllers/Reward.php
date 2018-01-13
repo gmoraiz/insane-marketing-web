@@ -2,15 +2,24 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Reward extends CI_Controller{
+    private $pagination;
     
     public function __construct(){
         parent::__construct();
         $this->load->model('RewardModel','reward');
     }
     
+    public function select($id){
+    	if($this->acolyte->is_mobile_authorized()){
+    		$this->acolyte->res_ajax(200, null, $this->reward->select_to_mobile($id));
+    	}
+    	$this->acolyte->res_ajax(401, "Unauthorized");
+    }
+    
     public function insert(){
     	if($this->session->userdata('logged')){
-	        $this->form_validation->set_rules('description', 'Name', 'required');
+    		$this->form_validation->set_rules('title', 'Title', 'required|max_length[50]');
+	        $this->form_validation->set_rules('description', 'Description', 'max_length[255]');
 	        $_POST['required'] = filter_var($this->input->post('required'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 	        $this->form_validation->set_rules('required', 'Required', 'required|trim');
 			if($this->form_validation->run()){
@@ -33,7 +42,8 @@ class Reward extends CI_Controller{
     
     public function update($id){
     	if($this->session->userdata('logged')){
-	        $this->form_validation->set_rules('description', 'Name', 'required');
+	        $this->form_validation->set_rules('title', 'Title', 'required|max_length[50]');
+	        $this->form_validation->set_rules('description', 'Description', 'max_length[255]');
 	        $this->form_validation->set_rules('required', 'Required', 'required|trim');
 			if($this->form_validation->run()){
 			    if($this->upload_picture() || !empty($this->input->post('no-picture'))){
